@@ -10,61 +10,54 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-import static elephantiza.mute_bix_me.Globals.SoundLevel;
-
 public class MainActivity extends AppCompatActivity {
 
-    private AudioManager audioManager;
     BroadcastReceiver receiver;
+    ImageButton reniButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ImageButton reniButton = findViewById(R.id.reni_main_button);
+        reniButton = findViewById(R.id.reni_main_button);
+        reniButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { //TODO Change Reni when this happens
+                if (Globals.soundLevel == Globals.SoundLevel.MUTE) {
+                    reniButton.setBackground(getDrawable(R.drawable.reni));
+                    Globals.soundLevel = Globals.SoundLevel.SOUND;
+                    Globals.restoreAll(getApplicationContext());
+                } else if (Globals.soundLevel == Globals.SoundLevel.SOUND) {
+                    reniButton.setBackground(getDrawable(R.drawable.reni_vib));
+                    Globals.soundLevel = Globals.SoundLevel.VIB;
+                    Globals.vibAll(getApplicationContext());
+                } else {
+                    reniButton.setBackground(getDrawable(R.drawable.reni_shh));
+                    Globals.soundLevel = Globals.SoundLevel.MUTE;
+                    Globals.muteAll(getApplicationContext());
+                }
+            }
+        });
 
         receiver = new BroadcastReceiver(){
             @Override
             public void onReceive(Context context, Intent intent) {
                 AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
-                if (audioManager.getRingerMode() == audioManager.RINGER_MODE_NORMAL) {
+                if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
                     reniButton.setBackground(getDrawable(R.drawable.reni));
-                    Globals.soundLevel = SoundLevel.SOUND;
-                }
-                else if (audioManager.getRingerMode() == audioManager.RINGER_MODE_VIBRATE) {
+                    Globals.soundLevel = Globals.SoundLevel.SOUND;
+                } else if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE) {
                     reniButton.setBackground(getDrawable(R.drawable.reni_vib));
-                    Globals.soundLevel = SoundLevel.VIB;
-                }
-                else {
+                    Globals.soundLevel = Globals.SoundLevel.VIB;
+                } else {
                     reniButton.setBackground(getDrawable(R.drawable.reni_shh));
-                    Globals.soundLevel = SoundLevel.MUTE;
+                    Globals.soundLevel = Globals.SoundLevel.MUTE;
                 }
             }
         };
         IntentFilter filter = new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION);
         registerReceiver(receiver,filter);
-
-        reniButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { //TODO Change Reni when this happens
-                if (Globals.soundLevel == SoundLevel.MUTE) {
-                    reniButton.setBackground(getDrawable(R.drawable.reni));
-                    Globals.soundLevel = SoundLevel.SOUND;
-                    Globals.restoreAll(getApplicationContext());
-                }
-                else if (Globals.soundLevel == SoundLevel.SOUND) {
-                    reniButton.setBackground(getDrawable(R.drawable.reni_vib));
-                    Globals.soundLevel = SoundLevel.VIB;
-                    Globals.vibAll(getApplicationContext());
-                }
-                else {
-                    reniButton.setBackground(getDrawable(R.drawable.reni_shh));
-                    Globals.soundLevel = SoundLevel.MUTE;
-                    Globals.muteAll(getApplicationContext());
-                }
-            }
-        });
     }
 
     @Override

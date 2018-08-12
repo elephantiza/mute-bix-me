@@ -3,12 +3,10 @@ package elephantiza.mute_bix_me;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -20,20 +18,17 @@ import static android.content.Context.AUDIO_SERVICE;
  */
 public class ReniWidget extends AppWidgetProvider {
 
-    private AudioManager audioManager;
-    SharedPreferences sharedPrefs;
     private static final String ReniOnClick = "ReniOnClick";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        if (ReniOnClick.equals(intent.getAction())){
+        if (intent.getAction().equals(ReniOnClick)){
 
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.reni_widget);
             ComponentName reniWidget = new ComponentName(context, ReniWidget.class);
-            audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
 
             Log.d("Clicked", " I have just clicked Reni");
             if (Globals.soundLevel == Globals.SoundLevel.MUTE) {
@@ -56,23 +51,22 @@ public class ReniWidget extends AppWidgetProvider {
         }
 
         //if (AudioManager.RINGER_MODE_CHANGED_ACTION.equals(intent.getAction()))
-        {
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.reni_widget);
-            ComponentName reniWidget = new ComponentName(context, ReniWidget.class);
-            AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
-            if (audioManager.getRingerMode() == audioManager.RINGER_MODE_NORMAL) {
-                views.setImageViewResource(R.id.reni_widget_button, R.drawable.reni);
-                Globals.soundLevel = Globals.SoundLevel.SOUND;
-            } else if (audioManager.getRingerMode() == audioManager.RINGER_MODE_VIBRATE) {
-                views.setImageViewResource(R.id.reni_widget_button, R.drawable.reni_vib);
-                Globals.soundLevel = Globals.SoundLevel.VIB;
-            } else {
-                views.setImageViewResource(R.id.reni_widget_button, R.drawable.reni_shh);
-                Globals.soundLevel = Globals.SoundLevel.MUTE;
-            }
-            appWidgetManager.updateAppWidget(reniWidget, views);
+        Log.d ("Action",intent.getAction() );
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.reni_widget);
+        ComponentName reniWidget = new ComponentName(context, ReniWidget.class);
+        AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
+        if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
+            views.setImageViewResource(R.id.reni_widget_button, R.drawable.reni);
+            Globals.soundLevel = Globals.SoundLevel.SOUND;
+        } else if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE) {
+            views.setImageViewResource(R.id.reni_widget_button, R.drawable.reni_vib);
+            Globals.soundLevel = Globals.SoundLevel.VIB;
+        } else {
+            views.setImageViewResource(R.id.reni_widget_button, R.drawable.reni_shh);
+            Globals.soundLevel = Globals.SoundLevel.MUTE;
         }
+        appWidgetManager.updateAppWidget(reniWidget, views);
     }
 
     @Override
@@ -83,6 +77,14 @@ public class ReniWidget extends AppWidgetProvider {
         views.setOnClickPendingIntent(R.id.reni_widget_button, getPendingSelfIntent(context, ReniOnClick));
 
         appWidgetManager.updateAppWidget(reniWidget, views);
+    }
+
+    @Override
+    public void onEnabled(Context context) {
+        Log.d ("On Enabled", "I am here" );
+
+        IntentFilter filter = new IntentFilter(AudioManager.RINGER_MODE_CHANGED_ACTION);
+        context.getApplicationContext().registerReceiver(this, filter);
     }
 
     protected PendingIntent getPendingSelfIntent(Context context, String action) {

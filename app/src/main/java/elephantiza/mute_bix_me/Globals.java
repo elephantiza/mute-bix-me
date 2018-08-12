@@ -5,40 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.util.Log;
-
-import static android.content.Context.AUDIO_SERVICE;
 
 public class Globals {
-    public enum SoundLevel {SOUND, VIB, MUTE};
+    public enum SoundLevel {SOUND, VIB, MUTE}
     public static SoundLevel soundLevel = SoundLevel.SOUND;
-    public static int[] streams = {
-        AudioManager.STREAM_RING,
-        AudioManager.STREAM_NOTIFICATION,
-        AudioManager.STREAM_SYSTEM,
-        AudioManager.STREAM_MUSIC
-    };
-
 
     public static void muteAll(Context context) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && !notificationManager.isNotificationPolicyAccessGranted()) {
-
+        if (!notificationManager.isNotificationPolicyAccessGranted()) {
             Intent intent = new Intent(
-                    android.provider.Settings
-                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-
+                    android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
             context.startActivity(intent);
-        }
-
-        else {
+        } else {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-
             audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
             audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);
             audioManager.setStreamVolume(14, 0, 0);
@@ -49,17 +30,13 @@ public class Globals {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && !notificationManager.isNotificationPolicyAccessGranted()) {
+        if (!notificationManager.isNotificationPolicyAccessGranted()) {
 
             Intent intent = new Intent(
-                    android.provider.Settings
-                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                    android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
 
             context.startActivity(intent);
-        }
-
-        else {
+        } else {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
             SharedPreferences sharedPrefs = context.getSharedPreferences("elephantiza.sharedprefs", Context.MODE_PRIVATE);
 
@@ -76,17 +53,11 @@ public class Globals {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && !notificationManager.isNotificationPolicyAccessGranted()) {
-
+        if (!notificationManager.isNotificationPolicyAccessGranted()) {
             Intent intent = new Intent(
-                    android.provider.Settings
-                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-
+                    android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
             context.startActivity(intent);
-        }
-
-        else {
+        } else {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
             SharedPreferences sharedPrefs = context.getSharedPreferences("elephantiza.sharedprefs", Context.MODE_PRIVATE);

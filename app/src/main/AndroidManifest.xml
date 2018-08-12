@@ -29,12 +29,12 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/silent_all_widget_info" />
+                android:resource="@xml/reni_widget_info" />
         </receiver>
 
         <service
             android:name=".ReniTile"
-            android:icon="@drawable/reni"
+            android:icon="@drawable/reni_contour"
             android:label="@string/reni_tile_name"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
 
