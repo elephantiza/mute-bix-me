@@ -7,11 +7,9 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
-
     BroadcastReceiver receiver;
     ImageButton reniButton;
 
@@ -21,22 +19,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         reniButton = findViewById(R.id.reni_main_button);
-        reniButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { //TODO Change Reni when this happens
-                if (Globals.soundLevel == Globals.SoundLevel.MUTE) {
-                    reniButton.setBackground(getDrawable(R.drawable.reni));
-                    Globals.soundLevel = Globals.SoundLevel.SOUND;
-                    Globals.restoreAll(getApplicationContext());
-                } else if (Globals.soundLevel == Globals.SoundLevel.SOUND) {
-                    reniButton.setBackground(getDrawable(R.drawable.reni_vib));
-                    Globals.soundLevel = Globals.SoundLevel.VIB;
-                    Globals.vibAll(getApplicationContext());
-                } else {
-                    reniButton.setBackground(getDrawable(R.drawable.reni_shh));
-                    Globals.soundLevel = Globals.SoundLevel.MUTE;
-                    Globals.muteAll(getApplicationContext());
-                }
+        reniButton.setOnClickListener(view -> { //TODO Change Reni when this happens
+            if (Globals.soundLevel == Globals.SoundLevel.MUTE) {
+                reniButton.setBackground(getDrawable(R.drawable.reni));
+                Globals.soundLevel = Globals.SoundLevel.SOUND;
+                Globals.restoreAll(getApplicationContext());
+            } else if (Globals.soundLevel == Globals.SoundLevel.SOUND) {
+                reniButton.setBackground(getDrawable(R.drawable.reni_vib));
+                Globals.soundLevel = Globals.SoundLevel.VIB;
+                Globals.vibAll(getApplicationContext());
+            } else {
+                reniButton.setBackground(getDrawable(R.drawable.reni_shh));
+                Globals.soundLevel = Globals.SoundLevel.MUTE;
+                Globals.muteAll(getApplicationContext());
             }
         });
 

@@ -83,4 +83,10 @@ public class ReniTile extends TileService {
         unregisterReceiver(receiver);
         super.onTileRemoved();
     }
+
+    @Override
+    public void onDestroy(){
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
 }

@@ -17,6 +17,7 @@ public class Globals {
         if (!notificationManager.isNotificationPolicyAccessGranted()) {
             Intent intent = new Intent(
                     android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } else {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -34,7 +35,7 @@ public class Globals {
 
             Intent intent = new Intent(
                     android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } else {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -56,6 +57,7 @@ public class Globals {
         if (!notificationManager.isNotificationPolicyAccessGranted()) {
             Intent intent = new Intent(
                     android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } else {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
