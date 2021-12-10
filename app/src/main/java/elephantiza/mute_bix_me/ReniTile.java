@@ -8,6 +8,7 @@ import android.graphics.drawable.Icon;
 import android.media.AudioManager;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
+import android.util.Log;
 
 public class ReniTile extends TileService {
 
@@ -15,6 +16,7 @@ public class ReniTile extends TileService {
 
     @Override
     public void onCreate() {
+        Log.d("ReniTile", Thread.currentThread().getStackTrace()[2].getMethodName());
         super.onCreate();
         receiver = new BroadcastReceiver(){
             @Override
@@ -50,6 +52,7 @@ public class ReniTile extends TileService {
 
     @Override
     public void onClick() {
+        Log.d("ReniTile", Thread.currentThread().getStackTrace()[2].getMethodName());
         super.onClick();
         if (Globals.soundLevel == Globals.SoundLevel.MUTE) {
             Globals.soundLevel = Globals.SoundLevel.SOUND;
@@ -79,13 +82,15 @@ public class ReniTile extends TileService {
     }
 
     @Override
-    public void onTileRemoved(){
+    public void onTileRemoved() {
+        Log.d("ReniTile", Thread.currentThread().getStackTrace()[2].getMethodName());
         unregisterReceiver(receiver);
         super.onTileRemoved();
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
+        Log.d("ReniTile", Thread.currentThread().getStackTrace()[2].getMethodName());
         unregisterReceiver(receiver);
         super.onDestroy();
     }

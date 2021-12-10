@@ -22,9 +22,8 @@
         <receiver android:name=".ReniWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.media.RINGER_MODE_CHANGED"/>
+                <action android:name="ReniOnClick"/>
             </intent-filter>
 
             <meta-data
